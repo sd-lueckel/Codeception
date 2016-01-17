@@ -47,7 +47,7 @@ class GenerateScenarioTest extends BaseCommandRunner
     public function testMultipleTestsGeneration()
     {
         $this->execute(['suite' => 'dummy']);
-        $fileNames = array_keys($this->log);
+        $fileNames = array_keys($this->saved);
         $this->assertContains(codecept_root_dir().'tests/data/scenarios/dummy/Another.optimistic.txt', $fileNames);
         $this->assertContains(codecept_root_dir().'tests/data/scenarios/dummy/Another.pessimistic.txt', $fileNames);
         $this->assertArrayHasKey($file = codecept_root_dir().'tests/data/scenarios/dummy/File_Exists.txt', $this->saved);

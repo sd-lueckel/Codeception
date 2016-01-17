@@ -9,7 +9,7 @@ trait Dependencies
     abstract public function getTestResultObject();
     abstract public function getTestClass();
     abstract public function getName();
-    abstract public function getSignatuire();
+    abstract public function getSignature();
     abstract public function setDependencyInput($input);
 
 }

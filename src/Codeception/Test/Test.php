@@ -9,13 +9,13 @@ abstract class Test implements TestInterface, Interfaces\Descriptive
     use Feature\CodeCoverage;
     use Feature\ErrorLogger;
     use Feature\MetadataCollector;
-    use Feature\BlockByMetadata;
+    use Feature\IgnoreIfMetadataBlocked;
 
-    protected $testResult;
-    protected $blocked = false;
+    private $testResult;
+    private $ignored = false;
 
     protected $mixins = [
-      'blockByMetadata',
+      'ignoreIfMetadataBlocked',
       'coverage',
       'assertionCounter',
       'errorLogger'
@@ -52,7 +52,7 @@ abstract class Test implements TestInterface, Interfaces\Descriptive
         $status = self::STATUS_PENDING;
         $time = 0;
         $e = null;
-        if (!$this->blocked) {
+        if (!$this->ignored) {
             \PHP_Timer::start();
             try {
                 $this->test();
@@ -86,18 +86,16 @@ abstract class Test implements TestInterface, Interfaces\Descriptive
         return $this->testResult;
     }
 
-
-
     abstract public function test();
 
     abstract public function toString();
 
     /**
-     * @param boolean $blocked
+     * @param boolean $ignored
      */
-    protected function block($blocked)
+    protected function ignore($ignored)
     {
-        $this->blocked = $blocked;
+        $this->ignored = $ignored;
     }
 
 }

@@ -2,16 +2,22 @@
 namespace Codeception\Event;
 
 use Codeception\Step;
-use Codeception\TestInterface;
+use Codeception\Test\Interfaces\ScenarioDriven;
+use Symfony\Component\EventDispatcher\Event;
 
-class StepEvent extends TestEvent
+class StepEvent extends Event
 {
     /**
      * @var Step
      */
     protected $step;
 
-    public function __construct($test, Step $step)
+    /**
+     * @var ScenarioDriven
+     */
+    protected $test;
+
+    public function __construct(ScenarioDriven $test, Step $step)
     {
         $this->test = $test;
         $this->step = $step;
@@ -20,5 +26,13 @@ class StepEvent extends TestEvent
     public function getStep()
     {
         return $this->step;
+    }
+
+    /**
+     * @return ScenarioDriven
+     */
+    public function getTest()
+    {
+        return $this->test;
     }
 }

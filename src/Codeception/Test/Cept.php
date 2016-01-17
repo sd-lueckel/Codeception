@@ -15,16 +15,17 @@ class Cept extends Test implements Interfaces\Plain, Interfaces\ScenarioDriven, 
 
     public function __construct($name, $file)
     {
-        $this->setMetadata(new Metadata());
-        $this->getMetadata()->setName($name);
-        $this->getMetadata()->setFilename($file);
+        $metadata = new Metadata();
+        $metadata->setName($name);
+        $metadata->setFilename($file);
+        $this->setMetadata($metadata);
         $this->createScenario();
         $this->parser = new Parser($this->getScenario(), $this->getMetadata());
     }
 
     public function preload()
     {
-        $this->getParser()->prepareToRun($this->getRawBody());
+        $this->getParser()->prepareToRun($this->getSourceCode());
     }
 
     public function test()
@@ -54,7 +55,7 @@ class Cept extends Test implements Interfaces\Plain, Interfaces\ScenarioDriven, 
         return $this->getFeature() . " (" . $this->getSignature() . ")";
     }
 
-    public function getRawBody()
+    public function getSourceCode()
     {
         return file_get_contents($this->getFileName());
     }
