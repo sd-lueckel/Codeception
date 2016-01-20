@@ -14,7 +14,7 @@ class TestCase implements LoaderInterface
         return '~Test\.php$~';
     }
 
-    function loadTests($path)
+    public function loadTests($path)
     {
         Parser::load($path);
         $testClasses = Parser::getClassesFromFile($path);
@@ -63,9 +63,10 @@ class TestCase implements LoaderInterface
     {
         $className = get_class($test);
         $methodName = $test->getName(false);
-        $test->setDependencies($deps = \PHPUnit_Util_Test::getDependencies($className, $methodName));
+        $dependencies = \PHPUnit_Util_Test::getDependencies($className, $methodName);
+        $test->setDependencies($dependencies);
         if ($test instanceof TestCaseFormat) {
-            $test->getMetadata()->setDependencies($deps);
+            $test->getMetadata()->setDependencies($dependencies);
             $test->getMetadata()->setEnv(Annotation::forMethod($test, $methodName)->fetchAll('env'));
         }
     }

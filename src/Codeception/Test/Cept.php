@@ -4,7 +4,11 @@ namespace Codeception\Test;
 use Codeception\Exception\TestParseException;
 use Codeception\Lib\Parser;
 
-class Cept extends Test implements Interfaces\Plain, Interfaces\ScenarioDriven, Interfaces\Reported
+/**
+ * Executes tests delivered in Cept format.
+ * Prepares metadata, parses test body on preload, and executes a test in `test` method.
+ */
+class Cept extends Test implements Interfaces\Plain, Interfaces\ScenarioDriven, Interfaces\Reported, Interfaces\Dependent
 {
     use Feature\ScenarioLoader;
 
@@ -75,5 +79,10 @@ class Cept extends Test implements Interfaces\Plain, Interfaces\ScenarioDriven, 
     protected function getParser()
     {
         return $this->parser;
+    }
+
+    public function getDependencies()
+    {
+        return $this->getMetadata()->getDependencies();
     }
 }

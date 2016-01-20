@@ -4,7 +4,12 @@ namespace Codeception\Test;
 use Codeception\Lib\Parser;
 use Codeception\Util\Annotation;
 
-class Cest extends Test implements Interfaces\ScenarioDriven, Interfaces\Reported
+/**
+ * Executes tests delivered in Cest format.
+ *
+ * Handles loading of Cest cases, executing specific methods, following the order from `@before` and `@after` annotations.
+ */
+class Cest extends Test implements Interfaces\ScenarioDriven, Interfaces\Reported, Interfaces\Dependent
 {
     use Feature\ScenarioLoader;
     /**
@@ -168,5 +173,17 @@ class Cest extends Test implements Interfaces\ScenarioDriven, Interfaces\Reporte
     protected function getParser()
     {
         return $this->parser;
+    }
+
+    public function getDependencies()
+    {
+        $names = [];
+        foreach ($this->getMetadata()->getDependencies() as $required) {
+            if ((strpos($required, ':') === false) and method_exists($this->getTestClass(), $required)) {
+                $required = get_class($this->getTestClass()) . ":$required";
+            }
+            $names[] = $required;
+        }
+        return $names;
     }
 }

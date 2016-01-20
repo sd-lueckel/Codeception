@@ -5,9 +5,13 @@ use Codeception\Configuration;
 use Codeception\Scenario;
 use Codeception\TestInterface;
 
+/**
+ * Represents tests from PHPUnit compatible format.
+ */
 class TestCase extends \PHPUnit_Framework_TestCase implements
     Interfaces\Descriptive,
     Interfaces\Reported,
+    Interfaces\Dependent,
     TestInterface
 {
 
@@ -26,6 +30,16 @@ class TestCase extends \PHPUnit_Framework_TestCase implements
 
     protected function setUp()
     {
+        if ($this->getMetadata()->isBlocked()) {
+            if ($this->getMetadata()->getSkip() !== null) {
+                $this->markTestSkipped($this->getMetadata()->getSkip());
+            }
+            if ($this->getMetadata()->getIncomplete() !== null) {
+                $this->markTestIncomplete($this->getMetadata()->getIncomplete());
+                return;
+            }
+            return;
+        }
         $scenario = new Scenario($this);
         $actorClass = $this->getMetadata()->getCurrent('actor');
         if ($actorClass) {
@@ -98,44 +112,24 @@ class TestCase extends \PHPUnit_Framework_TestCase implements
         ];
     }
 
-    protected function handleDependencies()
+    public function getDependencies()
     {
-        $dependencies = $this->getMetadata()->getDependencies();
-        if (empty($dependencies)) {
-            return true;
+        $names = [];
+        foreach ($this->getMetadata()->getDependencies() as $required) {
+            if ((strpos($required, ':') === false) and method_exists($this, $required)) {
+                $required = get_class($this) . ":$required";
+            }
+            $names[] = $required;
         }
-
-        $passed = $this->getTestResultObject()->passed();
-        $passedKeys = array_map(
-            function ($testname) {
-                return preg_replace('~with data set (.*?)~', '', $testname);
-            }, array_keys($passed)
-        );
-
-        $dependencyInput = [];
-
-        foreach ($dependencies as $dependency) {
-            if (strpos($dependency, ':') === false) {
-                $dependency = str_replace($this->getName(), $dependency, $this->getSignature());
-            }
-
-            if (!in_array($dependency, $passedKeys)) {
-                $this->getTestResultObject()->addError(
-                    $this,
-                    new \PHPUnit_Framework_SkippedTestError(sprintf("This test depends on '$dependency' to pass.")),
-                    0
-                );
-                return false;
-            }
-
-            if (isset($passed[$dependency])) {
-                $dependencyInput[] = $passed[$dependency]['result'];
-            } else {
-                $dependencyInput[] = null;
-            }
-        }
-        $this->setDependencyInput($dependencyInput);
-        return true;
+        return $names;
     }
 
+    /**
+     * Reset PHPUnit's dependencies
+     * @return bool
+     */
+    public function handleDependencies()
+    {
+        return true;
+    }
 }

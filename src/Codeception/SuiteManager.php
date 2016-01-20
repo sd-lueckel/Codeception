@@ -100,6 +100,7 @@ class SuiteManager
         foreach ($tests as $test) {
             $this->addToSuite($test);
         }
+        $this->suite->reorderDependencies();
     }
 
     protected function addToSuite($test)

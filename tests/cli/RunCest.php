@@ -293,6 +293,19 @@ EOF
   I see in this file "$file"
 EOF
 );
+    }
 
+    public function runDependentCest(CliGuy $I)
+    {
+        $I->executeCommand('run order DependentCest --no-exit');
+        $I->seeInShellOutput('There was 1 skipped test');
+    }
+
+    public function runDependentTest(CliGuy $I)
+    {
+        $I->executeCommand('run unit DependsTest --no-exit');
+        $I->seeInShellOutput('There was 1 skipped test');
+        $I->executeCommand('run unit --no-exit');
+        $I->seeInShellOutput('There were 2 skipped tests');
     }
 }
