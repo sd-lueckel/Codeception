@@ -17,7 +17,6 @@ class Dependencies implements EventSubscriberInterface
         Events::TEST_SUCCESS => 'testSuccess'
     ];
 
-    protected $startedTests = [];
     protected $successfulTests = [];
 
     public function testStart(TestEvent $event)
@@ -30,7 +29,7 @@ class Dependencies implements EventSubscriberInterface
         $testSignatures = $test->getDependencies();
         foreach ($testSignatures as $signature) {
             if (!in_array($signature, $this->successfulTests)) {
-                $test->getMetadata()->setSkip(sprintf("This test depends on %s to pass", Descriptor::getTestSignature($test), $signature));
+                $test->getMetadata()->setSkip("This test depends on $signature to pass");
                 return;
             }
         }
