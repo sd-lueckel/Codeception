@@ -1,5 +1,5 @@
 <?php
-class DependsTest extends \Codeception\Test\TestCase {
+class DependsTest extends \Codeception\Test\Unit {
 
     /**
      * @group depends

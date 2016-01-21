@@ -2,7 +2,7 @@
 namespace Codeception\Util;
 
 
-class JsonArrayTest extends \Codeception\Test\TestCase
+class JsonArrayTest extends \Codeception\Test\Unit
 {
 
     /**

@@ -1,5 +1,5 @@
 <?php
-class TestTest extends \Codeception\Test\TestCase
+class TestTest extends \Codeception\Test\Unit
 {
 
     public function testReportedInterface()

@@ -2,7 +2,7 @@
 namespace Codeception\Test\Loader;
 
 use Codeception\Lib\Parser;
-use Codeception\Test\TestCase as TestCaseFormat;
+use Codeception\Test\Unit as TestCaseFormat;
 use Codeception\Util\Annotation;
 
 class TestCase implements LoaderInterface

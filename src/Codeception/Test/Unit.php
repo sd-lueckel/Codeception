@@ -8,7 +8,7 @@ use Codeception\TestInterface;
 /**
  * Represents tests from PHPUnit compatible format.
  */
-class TestCase extends \PHPUnit_Framework_TestCase implements
+class Unit extends \PHPUnit_Framework_TestCase implements
     Interfaces\Descriptive,
     Interfaces\Reported,
     Interfaces\Dependent,
