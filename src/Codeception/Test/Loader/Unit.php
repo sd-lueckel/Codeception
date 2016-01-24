@@ -5,7 +5,7 @@ use Codeception\Lib\Parser;
 use Codeception\Test\Unit as TestCaseFormat;
 use Codeception\Util\Annotation;
 
-class TestCase implements LoaderInterface
+class Unit implements LoaderInterface
 {
     protected $tests = [];
 

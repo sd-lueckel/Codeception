@@ -3,7 +3,7 @@ namespace Codeception\Test;
 
 use Codeception\Test\Loader\Cept as CeptLoader;
 use Codeception\Test\Loader\Cest as CestLoader;
-use Codeception\Test\Loader\TestCase as TestCaseLoader;
+use Codeception\Test\Loader\Unit as UnitLoader;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -49,7 +49,7 @@ class Loader
         $this->formats = [
             new CeptLoader(),
             new CestLoader(),
-            new TestCaseLoader(),
+            new UnitLoader(),
         ];
     }
 
